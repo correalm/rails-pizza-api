@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
+* Ruby version: 3.0.6
 
 * System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
+    - Docker
+    - Docker Compose
+* Runing the app
+    `docker-compose up --build`
 * How to run the test suite
+    Access the container terminal using the following command
+        `docker exec -it rails-pizza-api-app-1 /bin/bash`
 
-* Services (job queues, cache servers, search engines, etc.)
+    Then:
+        `bundle exec rspec`
 
-* Deployment instructions
-
+> This app is based on [AmbulnzLLC backend challenge](https://github.com/AmbulnzLLC/fullstack-challenge/tree/master/backend)
 * ...
