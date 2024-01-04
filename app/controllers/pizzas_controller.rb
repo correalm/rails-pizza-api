@@ -5,7 +5,7 @@ class PizzasController < ApplicationController
   def index
     @pizzas = Pizza.all
 
-    render json: @pizzas
+    render json: PizzaBlueprint.render(@pizzas)
   end
 
   # GET /pizzas/1
