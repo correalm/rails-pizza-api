@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe 'Pizzas', type: :request do
+RSpec.describe 'Api::Pizzas', type: :request do
   describe 'GET /index' do
     it 'returns pizzas' do
       create_list(:pizza, 2)
 
-      get pizzas_path
+      get api_pizzas_path
 
       body = JSON.parse(response.body)
 
