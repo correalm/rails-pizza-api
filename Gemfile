@@ -10,6 +10,8 @@ gem 'puma', '~> 5.0'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'blueprinter'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
