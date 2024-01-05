@@ -9,7 +9,7 @@ module Api
     end
 
     def show
-      render json: @pizza
+      render json: PizzaBlueprint.render(@pizza)
     end
 
     def create
