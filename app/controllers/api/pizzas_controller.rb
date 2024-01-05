@@ -24,7 +24,7 @@ module Api
 
     def update
       if @pizza.update(pizza_params)
-        render json: @pizza
+        render json: PizzaBlueprint.render(@pizza)
       else
         render json: @pizza.errors, status: :unprocessable_entity
       end
