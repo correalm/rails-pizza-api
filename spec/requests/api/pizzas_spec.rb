@@ -141,4 +141,30 @@ RSpec.describe 'Api::Pizzas', type: :request do
       end
     end
   end
+
+  describe 'DELETE api/pizza/:id' do
+    context 'when resource is founded' do
+      let(:pizza) { create(:pizza) }
+
+      it 'returns 201' do
+        delete api_pizza_path(pizza.id)
+
+        expect(response).to have_http_status :no_content
+      end
+
+      it 'delets the record' do
+        delete api_pizza_path(pizza.id)
+
+        expect(Pizza.count).to eq(0)
+      end
+    end
+
+    context 'when resource is not founded' do
+      it 'return 404' do
+        delete api_pizza_path(1)
+
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
 end
