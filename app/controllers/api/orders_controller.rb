@@ -5,18 +5,18 @@ module Api
     def index
       @orders = Order.all
 
-      render json: @orders
+      render json: OrderBlueprint.render(@oders)
     end
 
     def show
-      render json: @order
+      render json: OrderBlueprint.render(@order)
     end
 
     def create
       @order = Order.new(order_params)
 
       if @order.save
-        render json: @order, status: :created, location: @order
+        render json: OrderBlueprint.render(@order), status: :created
       else
         render json: @order.errors, status: :unprocessable_entity
       end
@@ -24,7 +24,7 @@ module Api
 
     def update
       if @order.update(order_params)
-        render json: @order
+        render json: OrderBlueprint.render(@order)
       else
         render json: @order.errors, status: :unprocessable_entity
       end
