@@ -7,7 +7,11 @@ FactoryBot.define do
       end
 
       after(:create) do |order, context|
-        create_list(:order_item, context.items_count, order: order, pizza: context.pizza)
+        create_list(:order_item,
+                    context.items_count,
+                    order: order,
+                    pizza: context.pizza,
+                    quantity: rand(4))
       end
     end
   end
