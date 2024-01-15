@@ -25,7 +25,7 @@ group :development do
 end
 
 group :test do
-  gem 'json_matchers'
+  gem 'json-schema'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
