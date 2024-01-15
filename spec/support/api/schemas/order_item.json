@@ -1,0 +1,29 @@
+{
+  "title": "Order Item",
+  "description": "A Order Item",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "pizza": {
+      "$ref": "./pizza.json"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "quantity",
+    "pizza",
+    "created_at",
+    "updated_at"
+  ]
+}
