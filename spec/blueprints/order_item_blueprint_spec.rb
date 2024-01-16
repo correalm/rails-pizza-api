@@ -8,9 +8,6 @@ describe OrderItemBlueprint do
   let(:response) { OrderItemBlueprint.render(order_item) }
 
   describe 'schema' do
-    it 'match with specification' do
-      schema_path = "#{Dir.pwd}/spec/support/api/schemas/order_item.json"
-      JSON::Validator.validate!(schema_path, response)
-    end
+    it { expect(response).to match_schema('order_item') }
   end
 end

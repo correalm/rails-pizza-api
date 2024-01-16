@@ -7,9 +7,6 @@ describe PizzaBlueprint do
   let(:response) { PizzaBlueprint.render(pizza) }
 
   describe 'schema' do
-    it 'match with specification' do
-      schema_path = "#{Dir.pwd}/spec/support/api/schemas/pizza.json"
-      JSON::Validator.validate!(schema_path, response)
-    end
+    it { expect(response).to match_schema('pizza') }
   end
 end
