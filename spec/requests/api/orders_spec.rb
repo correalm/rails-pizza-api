@@ -14,58 +14,68 @@ describe 'Api::Orders', type: :request do
       get api_orders_path
 
       parsed_body = JSON.parse(response.body)
-      byebug
 
-      expect(parsed_body.first).to match_json_schema('orders')
-      expect(parsed_body.last).to match_json_schema('orders')
+      expect(parsed_body.first).to match_schema('order')
+      expect(parsed_body.last).to match_schema('order')
     end
   end
 
- # describe 'GET /api/orders/:id' do
- #   context 'when resource is founded' do
- #     it 'responds with 200' do
- #       create_list(:order, 2)
+  describe 'GET /api/orders/:id' do
+    context 'when resource is founded' do
+      let(:orders) { create_list(:order, 2) }
 
- #       get api_order_path(Order.first.id)
+      it 'responds with 200' do
+        get api_order_path(orders.first.id)
 
- #       expect(response).to have_http_status :ok
- #     end
+        expect(response).to have_http_status :ok
+      end
 
- #     it 'responds with the resource' do
- #       create_list(:order, 2)
+      it 'responds with the resource' do
+        get api_order_path(orders.second.id)
 
- #       get api_order_path(Order.first.id)
+        parsed_body = JSON.parse(response.body)
 
- #       parsed_body = JSON.parse(response.body)
+        expect(parsed_body).to match_schema('order')
+        expect(parsed_body['id']).to be(orders.second.id)
+      end
+    end
 
- #       expect(parsed_body).to match_json_schema('order')
- #       expect(parsed_body['id']).to be(Order.first.id)
- #     end
- #   end
+    context 'when resource is not founded' do
+      it 'responds with 404' do
+        get api_order_path(1), as: :json
 
- #   context 'when resource is not founded' do
- #     it 'responds with 404' do
- #       get api_order_path(1), as: :json
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
 
- #       expect(response).to have_http_status :not_found
- #     end
- #   end
- # end
+  describe 'POST /api/orders' do
+    context 'given valid params' do
+      let(:pizza) { create(:pizza) }
+      let(:order_items_attributes) { [{ quantity: 1, pizza_id: pizza.id }] }
 
- # describe 'POST /api/pizzas' do
- #   context 'given invalid params' do
- #     it 'respond with 422 status code' do
- #     end
- #   end
+      it 'returns 201 status code' do
+        post api_orders_path, params: { order: { order_items_attributes: order_items_attributes } }
 
- #   context 'given valid params' do
- #     it 'returns 201 status code' do
- #     end
+        expect(response).to have_http_status :created
+      end
 
- #     it 'returns the created pizza' do
- #     end
- #   end
- # end
+      it 'returns the created order' do
+        post api_orders_path, params: { order: { order_items_attributes: order_items_attributes } }
+
+        expect(response.body).to match_schema('order')
+      end
+
+      it 'persist the passed order items' do
+        post api_orders_path, params: { order: { order_items_attributes: order_items_attributes } }
+
+        parsed_response = JSON.parse(response.body)
+
+        expect(OrderItem.count).to eq(1)
+        expect(OrderItem.first.order.id).to eq(parsed_response['id'])
+      end
+    end
+  end
 
  # describe 'PUT /api/pizzas/:id' do
  #   context 'when record is founded' do
