@@ -5,7 +5,7 @@ module Api
     def index
       @orders = Order.all
 
-      render json: OrderBlueprint.render(@oders)
+      render json: OrderBlueprint.render(@orders)
     end
 
     def show
