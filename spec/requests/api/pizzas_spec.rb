@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Api::Pizzas', type: :request do
@@ -17,8 +19,8 @@ RSpec.describe 'Api::Pizzas', type: :request do
 
       parsed_body = JSON.parse(response.body)
 
-      expect(parsed_body.first).to match_json_schema('pizzas')
-      expect(parsed_body.last).to match_json_schema('pizzas')
+      expect(parsed_body.first).to match_schema('pizza')
+      expect(parsed_body.last).to match_schema('pizza')
     end
   end
 
@@ -39,7 +41,7 @@ RSpec.describe 'Api::Pizzas', type: :request do
 
         parsed_body = JSON.parse(response.body)
 
-        expect(parsed_body).to match_json_schema('pizzas')
+        expect(parsed_body).to match_schema('pizza')
         expect(parsed_body['id']).to be(Pizza.first.id)
       end
     end
@@ -78,7 +80,7 @@ RSpec.describe 'Api::Pizzas', type: :request do
 
         post api_pizzas_path, params: params
 
-        expect(response.body).to match_json_schema('pizzas')
+        expect(response.body).to match_schema('pizza')
       end
     end
   end
@@ -105,7 +107,7 @@ RSpec.describe 'Api::Pizzas', type: :request do
 
           parsed_body = JSON.parse(response.body)
 
-          expect(parsed_body).to match_json_schema('pizzas')
+          expect(parsed_body).to match_schema('pizza')
           expect(parsed_body['name']).to eq(params[:pizza][:name])
         end
       end
