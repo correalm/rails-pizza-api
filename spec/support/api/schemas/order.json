@@ -1,0 +1,26 @@
+{
+  "title": "Order",
+  "description": "A Order",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "./order_item.json" }
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "items",
+    "created_at",
+    "updated_at"
+  ]
+}

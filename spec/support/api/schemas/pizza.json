@@ -1,0 +1,29 @@
+{
+  "title": "Pizza",
+  "description": "A Pizza",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "price",
+    "created_at",
+    "updated_at"
+  ]
+}
