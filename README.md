@@ -15,4 +15,5 @@
         `bundle exec rspec`
 
 > This app is based on [AmbulnzLLC backend challenge](https://github.com/AmbulnzLLC/fullstack-challenge/tree/master/backend)
-* ...
+
+- TODO: make a github action to run rspec on pushs on `master` and opened PRs;
