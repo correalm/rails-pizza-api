@@ -77,43 +77,84 @@ describe 'Api::Orders', type: :request do
     end
   end
 
- # describe 'PUT /api/pizzas/:id' do
- #   context 'when record is founded' do
- #     context 'given valid params' do
- #       it 'responds with 200' do
- #       end
+  describe 'PUT api/order/:id' do
+    context 'when record is founded' do
+      let(:orders) { create_list(:order, 2) }
 
- #       it 'update the record' do
- #       end
- #     end
+      context 'given valid params' do
+        let(:order_items_attributes) { [{ quantity: 1, pizza_id: create(:pizza).id }] }
 
- #     context 'given invalid params' do
- #       it 'responds with 200' do
- #       end
+        it 'responds with 200' do
+          put api_order_path(orders.first.id), params: {
+            order: { order_items_attributes: order_items_attributes }
+          }
 
- #       it 'not changes the record' do
- #       end
- #     end
- #   end
+          expect(response).to have_http_status :ok
+        end
 
- #   context 'when record is not founded' do
- #     it 'responds with 404' do
- #     end
- #   end
- # end
+        it 'update the record' do
+          expect(orders.first.order_items.count).to eq(0)
 
- # describe 'DELETE api/pizza/:id' do
- #   context 'when resource is founded' do
- #     it 'returns 201' do
- #     end
+          put api_order_path(orders.first.id), params: {
+            order: { order_items_attributes: order_items_attributes }
+          }
 
- #     it 'delets the record' do
- #     end
- #   end
+          expect(orders.first.order_items.count).to eq(1)
+          expect(orders.first.order_items.first.quantity).to eq(order_items_attributes[0][:quantity])
+        end
+      end
 
- #   context 'when resource is not founded' do
- #     it 'return 404' do
- #     end
- #   end
- # end
+      context 'given invalid params' do
+        let(:order) { create(:order) }
+        let(:invalid_attr) { [{ quantity: '1', pizza_id: nil }] }
+
+        it 'responds with 422' do
+          put api_order_path(order.id), params: { order: { order_items_attributes: invalid_attr } }
+
+          expect(response).to have_http_status :unprocessable_entity
+        end
+
+        it 'not changes the record' do
+          put api_order_path(order.id), params: { order: { order_items_attributes: invalid_attr } }
+
+          expect(order.order_items.count).to eq(0)
+        end
+      end
+    end
+
+    context 'when record is not founded' do
+      it 'responds with 404' do
+        put api_order_path('foo-bar')
+
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
+
+  describe 'DELETE api/order/:id' do
+    context 'when resource is founded' do
+      let!(:order) { create(:order) }
+ 
+      it 'returns 204' do
+        delete api_order_path(order.id)
+ 
+        expect(response).to have_http_status :no_content
+      end
+ 
+      it 'delets the record' do
+        expect(Order.count).to eq(1)
+ 
+        delete api_order_path(order.id)
+ 
+        expect(Order.count).to eq(0)
+      end
+    end
+ 
+    context 'when resource is not founded' do
+      it 'return 404' do
+        delete api_order_path('foo-bar')
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
 end
