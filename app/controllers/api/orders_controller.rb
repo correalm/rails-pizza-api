@@ -41,7 +41,7 @@ module Api
     end
 
     def order_params
-      params.require(:order).permit(order_items_attributes: [:quantity, :pizza_id, :_destroy])
+      params.require(:order).permit(order_items_attributes: [:quantity, :pizza_id, :_destroy, :id])
     end
   end
 end
