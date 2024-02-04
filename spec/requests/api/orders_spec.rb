@@ -78,6 +78,87 @@ describe 'Api::Orders', type: :request do
   end
 
   describe 'PUT api/order/:id' do
+    context 'nested order items' do
+      let(:order_item) { create(:order_item, { quantity: 2 }) }
+      let(:order) { create(:order, order_items: [order_item]) }
+
+      context 'when destroy is passed as argument to order items attributes' do
+        let(:delete_order_items_attr) { [{ id: order_item.id, _destroy: true }] }
+
+        it 'responds with 200' do
+          put api_order_path(order.id), params: {
+            order: { order_items_attributes: delete_order_items_attr }
+          }
+
+          expect(response).to have_http_status :ok
+        end
+
+        it 'delete the passed order item' do
+          expect(order.order_items.count).to eq(1)
+
+          put api_order_path(order.id), params: {
+            order: { order_items_attributes: delete_order_items_attr }
+          }
+
+          expect(order.order_items.count).to eq(0)
+        end
+      end
+
+      context 'when valid order item parameters are passed' do
+        let(:pizza) { create(:pizza) }
+        let(:order_items_attr) { [{ id: order_item.id, pizza_id: pizza.id, quantity: 10 }] }
+
+        it 'responds with 200' do
+          put api_order_path(order.id), params: {
+            order: { order_items_attributes: order_items_attr }
+          }
+
+          expect(response).to have_http_status :ok
+        end
+
+        it 'updates the order item' do
+          put api_order_path(order.id), params: {
+            order: { order_items_attributes: order_items_attr }
+          }
+
+          order.order_items.reload
+          expect(order.order_items.first.quantity).to eq(order_items_attr[0][:quantity])
+          expect(order.order_items.first.pizza.id).to eq(pizza.id)
+        end
+      end
+
+      context 'when invalid order item parameters are passed' do
+        let(:order_items_attr) { [{ id: order_item.id, quantity: 'abc' }] }
+
+        it 'responds with 422' do
+          put api_order_path(order.id), params: {
+            order: { order_items_attributes: order_items_attr }
+          }
+
+          expect(response).to have_http_status :unprocessable_entity
+        end
+
+        it 'do not update the order item' do
+          put api_order_path(order.id), params: {
+            order: { order_items_attributes: order_items_attr }
+          }
+
+          order.order_items.reload
+          expect(order.order_items.first.quantity).to eq(order_item.quantity)
+        end
+      end
+
+      context 'when order item is not founded' do
+        it 'responds with 404' do
+          put api_order_path(order.id), params: {
+            order: { order_items_attributes: [{ id: 'foo-bar', quantity: 10 }] }
+          }
+
+          expect(response).to have_http_status :not_found
+        end
+      end
+    end
+
     context 'when record is founded' do
       let(:orders) { create_list(:order, 2) }
 
