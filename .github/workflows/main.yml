@@ -36,7 +36,9 @@ jobs:
           RAILS_ENV: test
           DATABASE_PORT: 3306
 
-        run: bundle exec rails RAILS_ENV=test db:create db:migrate
+        run: |
+          sudo service mysql start
+          bundle exec rails RAILS_ENV=test db:create db:migrate
 
       - name: Run Tests
         run: bundle exec rspec
