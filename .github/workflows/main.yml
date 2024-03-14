@@ -10,14 +10,37 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        image: mysql
+        restart: always
+        environment:
+          MYSQL_ROOT_PASSWORD: 123456
+          MYSQL_USERNAME: root
+          MYSQL_PASSWORD: 123456
+        ports: [ "3306:3306" ]
+        command: --default-authentication-plugin=mysql_native_password
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
         with:
           ruby-version: '3.0.5'
+
+    - name: Setup database
+      env:
+        MYSQL_ROOT_PASSWORD: 123456
+        MYSQL_USERNAME: root
+        MYSQL_PASSWORD: 123456
+        RAILS_ENV: test
+      run: |
+        bundle exec rails db:prepare
+        bundle exec ralis db:migrate
+
       - name: Install dependencies
         run: bundle install
+
       - name: Run Tests
         run: bundle exec rspec
 
