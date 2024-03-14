@@ -13,6 +13,10 @@ jobs:
     services:
       db:
         image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: 123456
+          MYSQL_USERNAME: root
+          MYSQL_PASSWORD: 123456
         ports: [ "3306:3306" ]
 
     steps:
