@@ -1,4 +1,4 @@
-FROM ruby:3.0
+FROM ruby:3.0.5
 
 RUN apt-get update && apt-get install -y build-essential libpq-dev nodejs
 RUN mkdir /app
