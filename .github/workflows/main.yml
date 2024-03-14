@@ -32,6 +32,10 @@ jobs:
         run: bundle install
 
       - name: Setup database
+        env:
+          RAILS_ENV: test
+          DATABASE_PORT: 3306
+
         run: bundle exec rails RAILS_ENV=test db:create db:migrate
 
       - name: Run Tests
