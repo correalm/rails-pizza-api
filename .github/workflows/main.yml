@@ -13,12 +13,7 @@ jobs:
     services:
       db:
         image: mysql
-        environment:
-          MYSQL_ROOT_PASSWORD: 123456
-          MYSQL_USERNAME: root
-          MYSQL_PASSWORD: 123456
         ports: [ "3306:3306" ]
-        command: --default-authentication-plugin=mysql_native_password
 
     steps:
       - uses: actions/checkout@v4
