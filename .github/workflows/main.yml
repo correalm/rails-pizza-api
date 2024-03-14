@@ -14,10 +14,12 @@ jobs:
       db:
         image: mysql
         env:
+          MYSQL_HOST: 127.0.0.1
           MYSQL_ROOT_PASSWORD: 123456
           MYSQL_USERNAME: root
           MYSQL_PASSWORD: 123456
-        ports: [ "3306:3306" ]
+        ports:
+          - "3306:3306"
 
     steps:
       - uses: actions/checkout@v4
