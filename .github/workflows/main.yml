@@ -29,11 +29,6 @@ jobs:
           ruby-version: '3.0.5'
 
     - name: Setup database
-      env:
-        MYSQL_ROOT_PASSWORD: 123456
-        MYSQL_USERNAME: root
-        MYSQL_PASSWORD: 123456
-        RAILS_ENV: test
       run: |
         bundle exec rails db:prepare
         bundle exec ralis db:migrate
