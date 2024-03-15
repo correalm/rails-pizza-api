@@ -33,16 +33,14 @@ jobs:
       - name: Install dependencies
         run: bundle install
 
-      - name: Setup database
-        env:
-          RAILS_ENV: test
-          DATABASE_PORT: 3306
-
+      - name: Setup MySQL
         run: |
-          mysql -h 127.0.0.1 -u root -proot -e "CREATE USER 'root'@'%' IDENTIFIED BY '123456';"
-          mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL PRIVILEGES ON app_test.* TO 'root'@'%';"
-          mysql -h 127.0.0.1 -u root -proot -e "FLUSH PRIVILEGES;"
-          sudo service mysql start
+          sudo apt-get install -y mysql-client libmysqlclient-dev
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
+          mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -proot mysql
+
+      - name: Setup database
+        run: |
           bundle exec rails RAILS_ENV=test db:create db:migrate
 
       - name: Run Tests
