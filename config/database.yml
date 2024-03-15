@@ -4,7 +4,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
   password: 123456
-  host: 127.0.0.1
+  host: db
 
 development:
   <<: *default
@@ -12,6 +12,8 @@ development:
 
 test:
   <<: *default
+  host: <%= ENV.fetch('MYSQL_HOST', 'db') %>
+  port: <%= ENV.fetch('MYSQL_PORT', 3306) %>
   database: app_test
 
 production:
