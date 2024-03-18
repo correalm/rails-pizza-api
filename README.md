@@ -12,6 +12,6 @@
         `docker exec -it rails-pizza-api-app-1 /bin/bash`
 
     Then:
-        `bundle exec rspec`
+        `bundle exec rspec RAILS_ENV=test`
 
 > This app is based on [AmbulnzLLC backend challenge](https://github.com/AmbulnzLLC/fullstack-challenge/tree/master/backend)
